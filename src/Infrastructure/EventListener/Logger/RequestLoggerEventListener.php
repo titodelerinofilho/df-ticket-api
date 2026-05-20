@@ -14,9 +14,9 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 final readonly class RequestLoggerEventListener
 {
     public function __construct(
-        private LoggerInterface       $requestsLogger,
+        private LoggerInterface $requestsLogger,
         private ParameterBagInterface $params,
-        private CorrelationService    $correlationService,
+        private CorrelationService $correlationService,
     ) {
     }
 
@@ -41,4 +41,3 @@ final readonly class RequestLoggerEventListener
         );
     }
 }
-

@@ -38,6 +38,5 @@ final readonly class ResponseLoggerEventListener
                 'responseBody' => $response->getContent(),
             ],
         );
-
     }
 }

@@ -15,4 +15,3 @@ final class LivezController
         return new JsonResponse(['status' => 'alive']);
     }
 }
-

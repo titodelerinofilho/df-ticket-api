@@ -41,4 +41,3 @@ final class CorrelationService implements CorrelationServiceInterface
         $this->correlationIdentifier = $correlationIdentifier;
     }
 }
-
