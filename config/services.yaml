@@ -19,5 +19,7 @@ services:
     App\:
         resource: '../src/'
 
+    App\Domain\Correlation\CorrelationIdProvider: '@App\Infrastructure\Service\Correlation\RequestCorrelationIdProvider'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

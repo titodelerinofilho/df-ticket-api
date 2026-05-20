@@ -1,0 +1,29 @@
+monolog:
+    handlers:
+        requests:
+            type: stream
+            path: "php://stdout"
+            level: info
+            channels: [ requests ]
+        responses:
+            type: stream
+            path: "php://stdout"
+            level: info
+            channels: [ responses ]
+        exceptions:
+            type: stream
+            path: "php://stderr"
+            level: critical
+            channels: [ exceptions ]
+        database_queries:
+            type: stream
+            path: "php://stdout"
+            level: info
+            channels: [ database_queries ]
+
+    channels:
+        - requests
+        - responses
+        - exceptions
+        - database_queries
+        - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists

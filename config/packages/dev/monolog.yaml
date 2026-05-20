@@ -1,0 +1,29 @@
+monolog:
+    handlers:
+        requests:
+            type: stream
+            path: "%kernel.logs_dir%/requests.log"
+            level: info
+            channels: [ requests ]
+        responses:
+            type: stream
+            path: "%kernel.logs_dir%/responses.log"
+            level: info
+            channels: [ responses ]
+        exceptions:
+            type: stream
+            path: "%kernel.logs_dir%/exceptions.log"
+            level: critical
+            channels: [ exceptions ]
+        database_queries:
+            type: stream
+            path: "%kernel.logs_dir%/database_queries.log"
+            level: info
+            channels: [ database_queries ]
+
+    channels:
+        - requests
+        - responses
+        - exceptions
+        - database_queries
+        - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
