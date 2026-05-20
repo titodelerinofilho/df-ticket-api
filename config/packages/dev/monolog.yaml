@@ -2,22 +2,22 @@ monolog:
     handlers:
         requests:
             type: stream
-            path: "%kernel.logs_dir%/requests.log"
+            path: "%env(default:kernel.logs_dir:LOG_DIR)%/requests.log"
             level: info
             channels: [ requests ]
         responses:
             type: stream
-            path: "%kernel.logs_dir%/responses.log"
+            path: "%env(default:kernel.logs_dir:LOG_DIR)%/responses.log"
             level: info
             channels: [ responses ]
         exceptions:
             type: stream
-            path: "%kernel.logs_dir%/exceptions.log"
+            path: "%env(default:kernel.logs_dir:LOG_DIR)%/exceptions.log"
             level: critical
             channels: [ exceptions ]
         database_queries:
             type: stream
-            path: "%kernel.logs_dir%/database_queries.log"
+            path: "%env(default:kernel.logs_dir:LOG_DIR)%/database_queries.log"
             level: info
             channels: [ database_queries ]
 

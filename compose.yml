@@ -3,6 +3,12 @@ services:
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./:/var/www
     depends_on:
@@ -23,9 +29,9 @@ services:
   df-ticket-database:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: df_ticket
-      POSTGRES_USER: df_ticket
-      POSTGRES_PASSWORD: df_ticket
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:

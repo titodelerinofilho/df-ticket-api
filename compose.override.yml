@@ -1,0 +1,4 @@
+services:
+  df-ticket-php:
+    environment:
+      APP_ENV: dev

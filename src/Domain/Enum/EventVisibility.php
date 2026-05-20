@@ -10,4 +10,3 @@ enum EventVisibility: string
     case PRIVATE = 'private';
     case UNLISTED = 'unlisted';
 }
-

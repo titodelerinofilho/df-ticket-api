@@ -8,4 +8,3 @@ interface CorrelationServiceInterface
 {
     public function getCorrelationIdentifier(): string;
 }
-

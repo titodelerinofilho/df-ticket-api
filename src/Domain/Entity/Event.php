@@ -6,8 +6,6 @@ namespace App\Domain\Entity;
 
 use App\Domain\Enum\EventStatus;
 use App\Domain\Enum\EventVisibility;
-use DateTime;
-use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -57,19 +55,19 @@ class Event
     private ?float $longitude = null;
 
     #[ORM\Column(type: 'datetime')]
-    private DateTime $startAt;
+    private \DateTime $startAt;
 
     #[ORM\Column(type: 'datetime')]
-    private DateTime $endAt;
+    private \DateTime $endAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?DateTime $salesStartAt = null;
+    private ?\DateTime $salesStartAt = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?DateTime $salesEndAt = null;
+    private ?\DateTime $salesEndAt = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?DateTime $publishedAt = null;
+    private ?\DateTime $publishedAt = null;
 
     #[ORM\Column(enumType: EventStatus::class)]
     private EventStatus $status = EventStatus::DRAFT;
@@ -87,13 +85,13 @@ class Event
     private ?Uuid $updatedBy = null;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeImmutable $createdAt;
+    private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeImmutable $updatedAt;
+    private \DateTimeImmutable $updatedAt;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private ?DateTimeImmutable $deletedAt = null;
+    private ?\DateTimeImmutable $deletedAt = null;
 
     public function __construct()
     {
@@ -103,7 +101,7 @@ class Event
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $now = new DateTimeImmutable();
+        $now = new \DateTimeImmutable();
         $this->createdAt = $now;
         $this->updatedAt = $now;
     }
@@ -111,7 +109,7 @@ class Event
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getIdentifier(): Uuid
@@ -244,52 +242,52 @@ class Event
         $this->longitude = $longitude;
     }
 
-    public function getStartAt(): DateTime
+    public function getStartAt(): \DateTime
     {
         return $this->startAt;
     }
 
-    public function setStartAt(DateTime $startAt): void
+    public function setStartAt(\DateTime $startAt): void
     {
         $this->startAt = $startAt;
     }
 
-    public function getEndAt(): DateTime
+    public function getEndAt(): \DateTime
     {
         return $this->endAt;
     }
 
-    public function setEndAt(DateTime $endAt): void
+    public function setEndAt(\DateTime $endAt): void
     {
         $this->endAt = $endAt;
     }
 
-    public function getSalesStartAt(): ?DateTime
+    public function getSalesStartAt(): ?\DateTime
     {
         return $this->salesStartAt;
     }
 
-    public function setSalesStartAt(?DateTime $salesStartAt): void
+    public function setSalesStartAt(?\DateTime $salesStartAt): void
     {
         $this->salesStartAt = $salesStartAt;
     }
 
-    public function getSalesEndAt(): ?DateTime
+    public function getSalesEndAt(): ?\DateTime
     {
         return $this->salesEndAt;
     }
 
-    public function setSalesEndAt(?DateTime $salesEndAt): void
+    public function setSalesEndAt(?\DateTime $salesEndAt): void
     {
         $this->salesEndAt = $salesEndAt;
     }
 
-    public function getPublishedAt(): ?DateTime
+    public function getPublishedAt(): ?\DateTime
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(?DateTime $publishedAt): void
+    public function setPublishedAt(?\DateTime $publishedAt): void
     {
         $this->publishedAt = $publishedAt;
     }
@@ -344,34 +342,33 @@ class Event
         $this->updatedBy = $updatedBy;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeImmutable $createdAt): void
+    public function setCreatedAt(\DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-    public function getUpdatedAt(): DateTimeImmutable
+    public function getUpdatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): void
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
-    public function getDeletedAt(): ?DateTimeImmutable
+    public function getDeletedAt(): ?\DateTimeImmutable
     {
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(?DateTimeImmutable $deletedAt): void
+    public function setDeletedAt(?\DateTimeImmutable $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
 }
-

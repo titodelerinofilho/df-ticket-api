@@ -11,4 +11,3 @@ enum EventStatus: string
     case CANCELLED = 'cancelled';
     case FINISHED = 'finished';
 }
-
