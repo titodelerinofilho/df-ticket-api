@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Entity;
 
 use App\Domain\Enum\OrderStatus;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -50,6 +52,23 @@ class Order extends AbstractEntity
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $canceledAt = null;
+
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'order')]
+    private Collection $items;
+
+    #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'order')]
+    private Collection $payments;
+
+    #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'order')]
+    private Collection $tickets;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->items = new ArrayCollection();
+        $this->payments = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
+    }
 
     public function getUser(): User
     {
@@ -159,5 +178,35 @@ class Order extends AbstractEntity
     public function setCanceledAt(?\DateTime $canceledAt): void
     {
         $this->canceledAt = $canceledAt;
+    }
+
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function setItems(Collection $items): void
+    {
+        $this->items = $items;
+    }
+
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function setPayments(Collection $payments): void
+    {
+        $this->payments = $payments;
+    }
+
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function setTickets(Collection $tickets): void
+    {
+        $this->tickets = $tickets;
     }
 }

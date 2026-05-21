@@ -45,11 +45,23 @@ class User extends AbstractEntity
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user')]
     private Collection $orders;
 
+    #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'user')]
+    private Collection $tickets;
+
+    #[ORM\OneToMany(targetEntity: CheckIn::class, mappedBy: 'checkedBy')]
+    private Collection $checkIns;
+
+    #[ORM\OneToMany(targetEntity: AuditLog::class, mappedBy: 'user')]
+    private Collection $auditLogs;
+
     public function __construct()
     {
         parent::__construct();
         $this->ownedOrganizers = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
+        $this->checkIns = new ArrayCollection();
+        $this->auditLogs = new ArrayCollection();
     }
 
     public function getName(): string
@@ -131,4 +143,20 @@ class User extends AbstractEntity
     {
         return $this->orders;
     }
+
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function getCheckIns(): Collection
+    {
+        return $this->checkIns;
+    }
+
+    public function getAuditLogs(): Collection
+    {
+        return $this->auditLogs;
+    }
 }
+

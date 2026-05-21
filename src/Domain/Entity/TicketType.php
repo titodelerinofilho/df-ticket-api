@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Entity;
 
 use App\Domain\Enum\TicketTypeStatus;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -38,6 +40,19 @@ class TicketType extends AbstractEntity
 
     #[ORM\Column(enumType: TicketTypeStatus::class)]
     private TicketTypeStatus $status = TicketTypeStatus::DRAFT;
+
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'ticketType')]
+    private Collection $orderItems;
+
+    #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'ticketType')]
+    private Collection $tickets;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->orderItems = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
+    }
 
     public function getEvent(): Event
     {
@@ -127,5 +142,25 @@ class TicketType extends AbstractEntity
     public function setStatus(TicketTypeStatus $status): void
     {
         $this->status = $status;
+    }
+
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function setOrderItems(Collection $orderItems): void
+    {
+        $this->orderItems = $orderItems;
+    }
+
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function setTickets(Collection $tickets): void
+    {
+        $this->tickets = $tickets;
     }
 }
