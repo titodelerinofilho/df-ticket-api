@@ -26,7 +26,6 @@ abstract class AbstractEntity
 
     public function __construct()
     {
-        $this->identifier = Uuid::v7();
     }
 
     #[ORM\PrePersist]
@@ -41,5 +40,45 @@ abstract class AbstractEntity
     public function onPreUpdate(): void
     {
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function getIdentifier(): Uuid
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier(Uuid $identifier): void
+    {
+        $this->identifier = $identifier;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getUpdatedAt(): \DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    public function getDeletedAt(): ?\DateTimeImmutable
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeImmutable $deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
     }
 }

@@ -6,20 +6,18 @@ namespace App\Domain\Entity;
 
 use App\Domain\Enum\EventStatus;
 use App\Domain\Enum\EventVisibility;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'events')]
-#[ORM\HasLifecycleCallbacks]
-class Event
+class Event extends AbstractEntity
 {
-    #[ORM\Id]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    private Uuid $identifier;
-
-    #[ORM\Column(type: 'uuid')]
-    private Uuid $organizerIdentifier;
+    #[ORM\ManyToOne(targetEntity: Organizer::class, inversedBy: 'events')]
+    #[ORM\JoinColumn(name: 'organizer_identifier', referencedColumnName: 'identifier', nullable: false)]
+    private Organizer $organizer;
 
     #[ORM\Column(length: 255)]
     private string $title;
@@ -78,58 +76,33 @@ class Event
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $maxTickets = null;
 
-    #[ORM\Column(type: 'uuid', nullable: true)]
-    private ?Uuid $createdBy = null;
+    #[ORM\Column(name: 'created_by_identifier', type: 'uuid', nullable: true)]
+    private ?Uuid $createdByIdentifier = null;
 
-    #[ORM\Column(type: 'uuid', nullable: true)]
-    private ?Uuid $updatedBy = null;
+    #[ORM\Column(name: 'updated_by_identifier', type: 'uuid', nullable: true)]
+    private ?Uuid $updatedByIdentifier = null;
 
-    #[ORM\Column(type: 'datetime_immutable')]
-    private \DateTimeImmutable $createdAt;
+    #[ORM\OneToMany(targetEntity: TicketType::class, mappedBy: 'event')]
+    private Collection $ticketTypes;
 
-    #[ORM\Column(type: 'datetime_immutable')]
-    private \DateTimeImmutable $updatedAt;
-
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private ?\DateTimeImmutable $deletedAt = null;
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'event')]
+    private Collection $orders;
 
     public function __construct()
     {
-        $this->identifier = Uuid::v7();
+        parent::__construct();
+        $this->ticketTypes = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
-    #[ORM\PrePersist]
-    public function onPrePersist(): void
+    public function getOrganizer(): Organizer
     {
-        $now = new \DateTimeImmutable();
-        $this->createdAt = $now;
-        $this->updatedAt = $now;
+        return $this->organizer;
     }
 
-    #[ORM\PreUpdate]
-    public function onPreUpdate(): void
+    public function setOrganizer(Organizer $organizer): void
     {
-        $this->updatedAt = new \DateTimeImmutable();
-    }
-
-    public function getIdentifier(): Uuid
-    {
-        return $this->identifier;
-    }
-
-    public function setIdentifier(Uuid $identifier): void
-    {
-        $this->identifier = $identifier;
-    }
-
-    public function getOrganizerIdentifier(): Uuid
-    {
-        return $this->organizerIdentifier;
-    }
-
-    public function setOrganizerIdentifier(Uuid $organizerIdentifier): void
-    {
-        $this->organizerIdentifier = $organizerIdentifier;
+        $this->organizer = $organizer;
     }
 
     public function getTitle(): string
@@ -322,53 +295,43 @@ class Event
         $this->maxTickets = $maxTickets;
     }
 
-    public function getCreatedBy(): ?Uuid
+    public function getCreatedByIdentifier(): ?Uuid
     {
-        return $this->createdBy;
+        return $this->createdByIdentifier;
     }
 
-    public function setCreatedBy(?Uuid $createdBy): void
+    public function setCreatedByIdentifier(?Uuid $createdByIdentifier): void
     {
-        $this->createdBy = $createdBy;
+        $this->createdByIdentifier = $createdByIdentifier;
     }
 
-    public function getUpdatedBy(): ?Uuid
+    public function getUpdatedByIdentifier(): ?Uuid
     {
-        return $this->updatedBy;
+        return $this->updatedByIdentifier;
     }
 
-    public function setUpdatedBy(?Uuid $updatedBy): void
+    public function setUpdatedByIdentifier(?Uuid $updatedByIdentifier): void
     {
-        $this->updatedBy = $updatedBy;
+        $this->updatedByIdentifier = $updatedByIdentifier;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getTicketTypes(): Collection
     {
-        return $this->createdAt;
+        return $this->ticketTypes;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): void
+    public function setTicketTypes(Collection $ticketTypes): void
     {
-        $this->createdAt = $createdAt;
+        $this->ticketTypes = $ticketTypes;
     }
 
-    public function getUpdatedAt(): \DateTimeImmutable
+    public function getOrders(): Collection
     {
-        return $this->updatedAt;
+        return $this->orders;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): void
+    public function setOrders(Collection $orders): void
     {
-        $this->updatedAt = $updatedAt;
-    }
-
-    public function getDeletedAt(): ?\DateTimeImmutable
-    {
-        return $this->deletedAt;
-    }
-
-    public function setDeletedAt(?\DateTimeImmutable $deletedAt): void
-    {
-        $this->deletedAt = $deletedAt;
+        $this->orders = $orders;
     }
 }

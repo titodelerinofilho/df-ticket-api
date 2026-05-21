@@ -4,53 +4,56 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
+use App\Domain\Enum\PermissionEffect;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(
     name: 'permissions',
     uniqueConstraints: [
-        new ORM\UniqueConstraint(name: 'uniq_permissions_slug', columns: ['slug']),
+        new ORM\UniqueConstraint(name: 'uniq_permissions_role_action', columns: ['role_identifier', 'action_list_identifier']),
     ],
 )]
 class Permission extends AbstractEntity
 {
-    #[ORM\Column(length: 120)]
-    private string $name;
+    #[ORM\ManyToOne(targetEntity: Role::class, inversedBy: 'permissions')]
+    #[ORM\JoinColumn(name: 'role_identifier', referencedColumnName: 'identifier', nullable: false)]
+    private Role $role;
 
-    #[ORM\Column(length: 160)]
-    private string $slug;
+    #[ORM\ManyToOne(targetEntity: ActionList::class, inversedBy: 'permissions')]
+    #[ORM\JoinColumn(name: 'action_list_identifier', referencedColumnName: 'identifier', nullable: false)]
+    private ActionList $actionList;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $description = null;
+    #[ORM\Column(enumType: PermissionEffect::class)]
+    private PermissionEffect $effect = PermissionEffect::DENIED;
 
-    public function getName(): string
+    public function getRole(): Role
     {
-        return $this->name;
+        return $this->role;
     }
 
-    public function setName(string $name): void
+    public function setRole(Role $role): void
     {
-        $this->name = $name;
+        $this->role = $role;
     }
 
-    public function getSlug(): string
+    public function getActionList(): ActionList
     {
-        return $this->slug;
+        return $this->actionList;
     }
 
-    public function setSlug(string $slug): void
+    public function setActionList(ActionList $actionList): void
     {
-        $this->slug = $slug;
+        $this->actionList = $actionList;
     }
 
-    public function getDescription(): ?string
+    public function getEffect(): PermissionEffect
     {
-        return $this->description;
+        return $this->effect;
     }
 
-    public function setDescription(?string $description): void
+    public function setEffect(PermissionEffect $effect): void
     {
-        $this->description = $description;
+        $this->effect = $effect;
     }
 }
