@@ -39,35 +39,35 @@ final class Version20260521211036 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_54469DF468B93E5E ON tickets (ticket_type_identifier)');
         $this->addSql('CREATE INDEX IDX_54469DF4D0494586 ON tickets (user_identifier)');
         $this->addSql('CREATE TABLE webhook_events (identifier UUID NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, type VARCHAR(120) NOT NULL, payload JSON NOT NULL, status VARCHAR(255) NOT NULL, processed_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, retries INT NOT NULL, PRIMARY KEY (identifier))');
-        $this->addSql('ALTER TABLE audit_logs ADD CONSTRAINT FK_D62F2858D0494586 FOREIGN KEY (user_identifier) REFERENCES users (identifier) NOT DEFERRABLE');
-        $this->addSql('ALTER TABLE check_ins ADD CONSTRAINT FK_DFFFC3DFE1BD113E FOREIGN KEY (ticket_identifier) REFERENCES tickets (identifier) NOT DEFERRABLE');
-        $this->addSql('ALTER TABLE check_ins ADD CONSTRAINT FK_DFFFC3DF27A351BA FOREIGN KEY (checked_by_identifier) REFERENCES users (identifier) NOT DEFERRABLE');
-        $this->addSql('ALTER TABLE coupons ADD CONSTRAINT FK_F56411182FC05A45 FOREIGN KEY (event_identifier) REFERENCES events (identifier) NOT DEFERRABLE');
-        $this->addSql('ALTER TABLE order_items ADD CONSTRAINT FK_62809DB0C4F47E3F FOREIGN KEY (order_identifier) REFERENCES orders (identifier) NOT DEFERRABLE');
-        $this->addSql('ALTER TABLE order_items ADD CONSTRAINT FK_62809DB068B93E5E FOREIGN KEY (ticket_type_identifier) REFERENCES ticket_types (identifier) NOT DEFERRABLE');
-        $this->addSql('ALTER TABLE payments ADD CONSTRAINT FK_65D29B32C4F47E3F FOREIGN KEY (order_identifier) REFERENCES orders (identifier) NOT DEFERRABLE');
-        $this->addSql('ALTER TABLE tickets ADD CONSTRAINT FK_54469DF4C4F47E3F FOREIGN KEY (order_identifier) REFERENCES orders (identifier) NOT DEFERRABLE');
-        $this->addSql('ALTER TABLE tickets ADD CONSTRAINT FK_54469DF4196683C FOREIGN KEY (order_item_identifier) REFERENCES order_items (identifier) NOT DEFERRABLE');
-        $this->addSql('ALTER TABLE tickets ADD CONSTRAINT FK_54469DF42FC05A45 FOREIGN KEY (event_identifier) REFERENCES events (identifier) NOT DEFERRABLE');
-        $this->addSql('ALTER TABLE tickets ADD CONSTRAINT FK_54469DF468B93E5E FOREIGN KEY (ticket_type_identifier) REFERENCES ticket_types (identifier) NOT DEFERRABLE');
-        $this->addSql('ALTER TABLE tickets ADD CONSTRAINT FK_54469DF4D0494586 FOREIGN KEY (user_identifier) REFERENCES users (identifier) NOT DEFERRABLE');
+        $this->addSql('ALTER TABLE audit_logs ADD CONSTRAINT fk_audit_log_user_identifier FOREIGN KEY (user_identifier) REFERENCES users (identifier) NOT DEFERRABLE');
+        $this->addSql('ALTER TABLE check_ins ADD CONSTRAINT fk_check_in_ticket_identifier FOREIGN KEY (ticket_identifier) REFERENCES tickets (identifier) NOT DEFERRABLE');
+        $this->addSql('ALTER TABLE check_ins ADD CONSTRAINT fk_check_in_checked_by_identifier FOREIGN KEY (checked_by_identifier) REFERENCES users (identifier) NOT DEFERRABLE');
+        $this->addSql('ALTER TABLE coupons ADD CONSTRAINT fk_coupon_event_identifier FOREIGN KEY (event_identifier) REFERENCES events (identifier) NOT DEFERRABLE');
+        $this->addSql('ALTER TABLE order_items ADD CONSTRAINT fk_order_item_order_identifier FOREIGN KEY (order_identifier) REFERENCES orders (identifier) NOT DEFERRABLE');
+        $this->addSql('ALTER TABLE order_items ADD CONSTRAINT fk_order_item_ticket_type_identifier FOREIGN KEY (ticket_type_identifier) REFERENCES ticket_types (identifier) NOT DEFERRABLE');
+        $this->addSql('ALTER TABLE payments ADD CONSTRAINT fk_payment_order_identifier FOREIGN KEY (order_identifier) REFERENCES orders (identifier) NOT DEFERRABLE');
+        $this->addSql('ALTER TABLE tickets ADD CONSTRAINT fk_ticket_order_identifier FOREIGN KEY (order_identifier) REFERENCES orders (identifier) NOT DEFERRABLE');
+        $this->addSql('ALTER TABLE tickets ADD CONSTRAINT fk_ticket_order_item_identifier FOREIGN KEY (order_item_identifier) REFERENCES order_items (identifier) NOT DEFERRABLE');
+        $this->addSql('ALTER TABLE tickets ADD CONSTRAINT fk_ticket_event_identifier FOREIGN KEY (event_identifier) REFERENCES events (identifier) NOT DEFERRABLE');
+        $this->addSql('ALTER TABLE tickets ADD CONSTRAINT fk_ticket_ticket_type_identifier FOREIGN KEY (ticket_type_identifier) REFERENCES ticket_types (identifier) NOT DEFERRABLE');
+        $this->addSql('ALTER TABLE tickets ADD CONSTRAINT fk_ticket_user_identifier FOREIGN KEY (user_identifier) REFERENCES users (identifier) NOT DEFERRABLE');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE audit_logs DROP CONSTRAINT FK_D62F2858D0494586');
-        $this->addSql('ALTER TABLE check_ins DROP CONSTRAINT FK_DFFFC3DFE1BD113E');
-        $this->addSql('ALTER TABLE check_ins DROP CONSTRAINT FK_DFFFC3DF27A351BA');
-        $this->addSql('ALTER TABLE coupons DROP CONSTRAINT FK_F56411182FC05A45');
-        $this->addSql('ALTER TABLE order_items DROP CONSTRAINT FK_62809DB0C4F47E3F');
-        $this->addSql('ALTER TABLE order_items DROP CONSTRAINT FK_62809DB068B93E5E');
-        $this->addSql('ALTER TABLE payments DROP CONSTRAINT FK_65D29B32C4F47E3F');
-        $this->addSql('ALTER TABLE tickets DROP CONSTRAINT FK_54469DF4C4F47E3F');
-        $this->addSql('ALTER TABLE tickets DROP CONSTRAINT FK_54469DF4196683C');
-        $this->addSql('ALTER TABLE tickets DROP CONSTRAINT FK_54469DF42FC05A45');
-        $this->addSql('ALTER TABLE tickets DROP CONSTRAINT FK_54469DF468B93E5E');
-        $this->addSql('ALTER TABLE tickets DROP CONSTRAINT FK_54469DF4D0494586');
+        $this->addSql('ALTER TABLE audit_logs DROP CONSTRAINT fk_audit_log_user_identifier');
+        $this->addSql('ALTER TABLE check_ins DROP CONSTRAINT fk_check_in_ticket_identifier');
+        $this->addSql('ALTER TABLE check_ins DROP CONSTRAINT fk_check_in_checked_by_identifier');
+        $this->addSql('ALTER TABLE coupons DROP CONSTRAINT fk_coupon_event_identifier');
+        $this->addSql('ALTER TABLE order_items DROP CONSTRAINT fk_order_item_order_identifier');
+        $this->addSql('ALTER TABLE order_items DROP CONSTRAINT fk_order_item_ticket_type_identifier');
+        $this->addSql('ALTER TABLE payments DROP CONSTRAINT fk_payment_order_identifier');
+        $this->addSql('ALTER TABLE tickets DROP CONSTRAINT fk_ticket_order_identifier');
+        $this->addSql('ALTER TABLE tickets DROP CONSTRAINT fk_ticket_order_item_identifier');
+        $this->addSql('ALTER TABLE tickets DROP CONSTRAINT fk_ticket_event_identifier');
+        $this->addSql('ALTER TABLE tickets DROP CONSTRAINT fk_ticket_ticket_type_identifier');
+        $this->addSql('ALTER TABLE tickets DROP CONSTRAINT fk_ticket_user_identifier');
         $this->addSql('DROP TABLE audit_logs');
         $this->addSql('DROP TABLE check_ins');
         $this->addSql('DROP TABLE coupons');

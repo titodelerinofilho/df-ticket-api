@@ -24,13 +24,13 @@ final class Version20260520182133 extends AbstractMigration
         $this->addSql('CREATE TABLE roles (identifier UUID NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, name VARCHAR(120) NOT NULL, slug VARCHAR(120) NOT NULL, description TEXT DEFAULT NULL, is_system BOOLEAN NOT NULL, PRIMARY KEY (identifier))');
         $this->addSql('CREATE TABLE users (identifier UUID NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, name VARCHAR(160) NOT NULL, email VARCHAR(180) NOT NULL, password VARCHAR(255) NOT NULL, email_verified_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, last_login_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, is_active BOOLEAN NOT NULL, role_identifier UUID NOT NULL, PRIMARY KEY (identifier))');
         $this->addSql('CREATE INDEX IDX_1483A5E9F81AE946 ON users (role_identifier)');
-        $this->addSql('ALTER TABLE users ADD CONSTRAINT FK_1483A5E9F81AE946 FOREIGN KEY (role_identifier) REFERENCES roles (identifier) NOT DEFERRABLE');
+        $this->addSql('ALTER TABLE users ADD CONSTRAINT fk_user_role_identifier FOREIGN KEY (role_identifier) REFERENCES roles (identifier) NOT DEFERRABLE');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE users DROP CONSTRAINT FK_1483A5E9F81AE946');
+        $this->addSql('ALTER TABLE users DROP CONSTRAINT fk_user_role_identifier');
         $this->addSql('DROP TABLE action_lists');
         $this->addSql('DROP TABLE events');
         $this->addSql('DROP TABLE permissions');
