@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,8 +29,18 @@ class Role extends AbstractEntity
     #[ORM\Column(type: 'boolean')]
     private bool $isSystem = false;
 
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'role', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'role')]
     private Collection $users;
+
+    #[ORM\OneToMany(targetEntity: Permission::class, mappedBy: 'role')]
+    private Collection $permissions;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->users = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
+    }
 
     public function getName(): string
     {
@@ -79,5 +90,15 @@ class Role extends AbstractEntity
     public function setUsers(Collection $users): void
     {
         $this->users = $users;
+    }
+
+    public function getPermissions(): Collection
+    {
+        return $this->permissions;
+    }
+
+    public function setPermissions(Collection $permissions): void
+    {
+        $this->permissions = $permissions;
     }
 }

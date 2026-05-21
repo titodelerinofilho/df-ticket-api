@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -37,9 +39,17 @@ class User extends AbstractEntity
     #[ORM\JoinColumn(name: 'role_identifier', referencedColumnName: 'identifier', nullable: false)]
     private Role $role;
 
+    #[ORM\OneToMany(targetEntity: Organizer::class, mappedBy: 'owner')]
+    private Collection $ownedOrganizers;
+
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user')]
+    private Collection $orders;
+
     public function __construct()
     {
         parent::__construct();
+        $this->ownedOrganizers = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
     public function getName(): string
@@ -110,5 +120,15 @@ class User extends AbstractEntity
     public function setRole(Role $role): void
     {
         $this->role = $role;
+    }
+
+    public function getOwnedOrganizers(): Collection
+    {
+        return $this->ownedOrganizers;
+    }
+
+    public function getOrders(): Collection
+    {
+        return $this->orders;
     }
 }
